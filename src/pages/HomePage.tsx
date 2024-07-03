@@ -1,29 +1,29 @@
 import React from "react";
 import Layout from "../components/Layout";
-import styles from "../styles/HomePage.module.css";
+import "../styles/HomePage.css";
 import { movies } from "../data/movieDatabase.js";
 
 const HomePage = () => {
   return (
     <Layout>
-      <div className={styles.homePage}>
-        <div className={styles.contentWrapper}>
-          <div className={styles.welcomeSection}>
+      <div className="home-page">
+        <div className="content-wrapper">
+          <div className="welcome-section">
             <h1>Welcome to MovieMeter</h1>
             <p>Discover and rate your favorite movies</p>
           </div>
           <section className="featured-movies">
             <h2>The Rating Feed</h2>
-            <div className={styles.movieGrid}>
+            <div className="movie-grid">
               {movies.map((movie) => (
-                <div key={movie.id} className={styles.movieCard}>
-                  <div className={styles.moviePoster}>
+                <div key={movie.id} className="movie-card">
+                  <div className="movie-poster">
                     <img src={movie.image} alt={movie.title} />
-                    <div className={styles.movieRating}>{movie.rating}</div>
+                    <div className="movie-rating">{movie.rating}</div>
                   </div>
-                  <div className={styles.movieInfo}>
-                    <div className={styles.movieTitle}>{movie.title}</div>
-                    <div className={styles.movieYear}>{movie.year}</div>
+                  <div className="movie-info">
+                    <div className="movie-title">{movie.title}</div>
+                    <div className="movie-year">{movie.year}</div>
                   </div>
                 </div>
               ))}

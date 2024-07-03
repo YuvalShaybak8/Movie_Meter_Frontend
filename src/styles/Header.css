@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
 
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
 .header {
   background: linear-gradient(to right, #1f4037, #99f2c8);
   padding: 1rem 2rem;
@@ -24,7 +31,7 @@
   flex-grow: 1;
 }
 
-.navButton {
+.nav-button {
   font-family: "Roboto", sans-serif;
   color: #ffffff;
   text-transform: uppercase;
@@ -34,7 +41,7 @@
   position: relative;
 }
 
-.navButton::after {
+.nav-button::after {
   content: "";
   display: block;
   width: 0;
@@ -47,11 +54,11 @@
   transform: translateX(-50%);
 }
 
-.navButton:hover::after {
+.nav-button:hover::after {
   width: 100%;
 }
 
-.logoutBtn {
+.logout-btn {
   font-family: "Roboto", sans-serif;
   color: #ffffff;
   text-transform: uppercase;
@@ -64,7 +71,7 @@
   transition: background 0.3s, color 0.3s;
 }
 
-.logoutBtn:hover {
+.logout-btn:hover {
   background: #ffffff;
   color: #1f4037;
 }

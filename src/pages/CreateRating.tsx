@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import styles from "../styles/CreateRating.module.css";
+import "../styles/CreateRating.css";
 import { FaStar } from "react-icons/fa";
 
 const CreateRating = () => {
@@ -23,19 +23,19 @@ const CreateRating = () => {
 
   return (
     <Layout>
-      <div className={styles.createRatingPage}>
-        <h1 className={styles.pageTitle}>Create a Rating</h1>
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.imageUpload}>
+      <div className="create-rating-page">
+        <h1 className="page-title">Create a Rating</h1>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="image-upload">
             {image ? (
               <img
                 src={URL.createObjectURL(image)}
                 alt="Uploaded"
-                className={styles.uploadedImage}
+                className="uploaded-image"
               />
             ) : (
               <div
-                className={styles.imagePlaceholder}
+                className="image-placeholder"
                 onClick={() => document.getElementById("fileInput")?.click()}
               >
                 <p>Click to upload movie poster</p>
@@ -48,8 +48,8 @@ const CreateRating = () => {
               style={{ display: "none" }}
             />
           </div>
-          <div className={styles.formContent}>
-            <div className={styles.formGroup}>
+          <div className="form-content">
+            <div className="form-group">
               <label htmlFor="movieName">Movie Name</label>
               <input
                 type="text"
@@ -60,9 +60,9 @@ const CreateRating = () => {
                 required
               />
             </div>
-            <div className={styles.formGroup}>
+            <div className="form-group">
               <label>Rating</label>
-              <div className={styles.starRating}>
+              <div className="star-rating">
                 {[...Array(10)].map((star, index) => {
                   const ratingValue = index + 1;
                   return (
@@ -75,8 +75,8 @@ const CreateRating = () => {
                         style={{ display: "none" }}
                       />
                       <FaStar
-                        className={`${styles.star} ${
-                          ratingValue <= (hover || rating) ? styles.active : ""
+                        className={`star ${
+                          ratingValue <= (hover || rating) ? "active" : ""
                         }`}
                         onMouseEnter={() => setHover(ratingValue)}
                         onMouseLeave={() => setHover(0)}
@@ -86,7 +86,7 @@ const CreateRating = () => {
                 })}
               </div>
             </div>
-            <button type="submit" className={styles.submitButton}>
+            <button type="submit" className="submit-button">
               Submit Rating
             </button>
           </div>

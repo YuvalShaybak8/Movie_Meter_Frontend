@@ -1,27 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "../styles/Header.module.css";
+import "../styles/Header.css";
 import { logout } from "../utils/AuthUtils";
 
 const Header = () => {
   return (
-    <header className={styles.header}>
-      <div className={styles.logo}>MovieMeter</div>
-      <nav className={styles.nav}>
-        <Link className={styles.navButton} to="/home">
+    <header className="header">
+      <div className="logo">MovieMeter</div>
+      <nav className="nav">
+        <Link className="nav-button" to="/home">
           Home
         </Link>
-        <Link className={styles.navButton} to="/create-rating">
+        <Link className="nav-button" to="/create-rating">
           Create a Rating
         </Link>
-        <Link className={styles.navButton} to="/my-rating">
+        <Link className="nav-button" to="/my-rating">
           My Rating
         </Link>
-        <Link className={styles.navButton} to="/my-profile">
+        <Link className="nav-button" to="/my-profile">
           My Profile
         </Link>
       </nav>
-      <button className={styles.logoutBtn} onClick={logout}>
+      <button className="logout-btn" onClick={logout}>
         Logout
       </button>
     </header>

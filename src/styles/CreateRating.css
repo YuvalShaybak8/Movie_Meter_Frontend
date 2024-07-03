@@ -1,9 +1,20 @@
-.createRatingPage {
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.create-rating-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 84vh;
-  padding: 1rem 2rem;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
   background-image: url("../assets/page_background/create_rating_background.jpg");
   background-size: cover;
   background-position: center;
@@ -12,7 +23,7 @@
   overflow: hidden;
 }
 
-.pageTitle {
+.page-title {
   color: #fff;
   font-size: 2.5rem;
   margin-bottom: 1rem;
@@ -32,11 +43,11 @@
   justify-content: center;
 }
 
-.imageUpload {
+.image-upload {
   margin-bottom: 2rem;
 }
 
-.imagePlaceholder {
+.image-placeholder {
   width: 260px;
   height: 450px;
   background: #f0f0f0;
@@ -49,38 +60,38 @@
   transition: all 0.3s ease;
 }
 
-.imagePlaceholder:hover {
+.image-placeholder:hover {
   background: #e0e0e0;
   border-color: #aaa;
 }
 
-.uploadedImage {
+.uploaded-image {
   width: 200px;
   height: 400px;
   object-fit: cover;
   border-radius: 12px;
 }
 
-.formContent {
+.form-content {
   display: flex;
   flex-direction: column;
   margin-left: 2rem;
   flex-grow: 1;
 }
 
-.formGroup {
+.form-group {
   margin-bottom: 1.5rem;
   width: 80%;
 }
 
-.formGroup label {
+.form-group label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
   color: #333;
 }
 
-.formGroup input {
+.form-group input {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
@@ -89,12 +100,12 @@
   transition: border-color 0.3s ease;
 }
 
-.formGroup input:focus {
+.form-group input:focus {
   outline: none;
   border-color: #4a148c;
 }
 
-.starRating {
+.star-rating {
   display: flex;
   justify-content: flex-start;
   margin-top: 0.5rem;
@@ -111,7 +122,7 @@
   color: #ffd700;
 }
 
-.submitButton {
+.submit-button {
   background: linear-gradient(135deg, #4a148c, #7c43bd);
   color: white;
   padding: 1rem 2rem;
@@ -125,7 +136,7 @@
   margin-top: 2rem;
 }
 
-.submitButton:hover {
+.submit-button:hover {
   background: linear-gradient(135deg, #7c43bd, #4a148c);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
