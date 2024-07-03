@@ -1,0 +1,132 @@
+.createRatingPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 84vh;
+  padding: 1rem 2rem;
+  background-image: url("../assets/page_background/create_rating_background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: "Roboto", sans-serif;
+  overflow: hidden;
+}
+
+.pageTitle {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.imageUpload {
+  margin-bottom: 2rem;
+}
+
+.imagePlaceholder {
+  width: 260px;
+  height: 450px;
+  background: #f0f0f0;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.imagePlaceholder:hover {
+  background: #e0e0e0;
+  border-color: #aaa;
+}
+
+.uploadedImage {
+  width: 200px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.formContent {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  flex-grow: 1;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  width: 80%;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #4a148c;
+}
+
+.starRating {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.5rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.star.active {
+  color: #ffd700;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #4a148c, #7c43bd);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.submitButton:hover {
+  background: linear-gradient(135deg, #7c43bd, #4a148c);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

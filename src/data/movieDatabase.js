@@ -1,0 +1,86 @@
+export const movies = [
+  {
+    id: 1,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie1.jpg",
+  },
+  {
+    id: 2,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie2.jpg",
+  },
+  {
+    id: 3,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie3.jpg",
+  },
+  {
+    id: 4,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie4.jpg",
+  },
+  {
+    id: 5,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie1.jpg",
+  },
+  {
+    id: 6,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie2.jpg",
+  },
+  {
+    id: 7,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie3.jpg",
+  },
+  {
+    id: 8,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie4.jpg",
+  },
+  {
+    id: 9,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie1.jpg",
+  },
+  {
+    id: 10,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie2.jpg",
+  },
+  {
+    id: 11,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie3.jpg",
+  },
+  {
+    id: 12,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie4.jpg",
+  },
+  {
+    id: 13,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie1.jpg",
+  },
+  {
+    id: 14,
+    title: "The Shawshank Redemption",
+    rating: 9.3,
+    image: "/src/assets/movie_cover/movie2.jpg",
+  },
+];
