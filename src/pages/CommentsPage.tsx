@@ -37,7 +37,7 @@ const CommentsPage = ({ movie }) => {
             alt={currentMovie.title}
             className="movie-image"
           />
-          <h2 className="movie-title">{currentMovie.title}</h2>
+          <h2 className="movie-title-comment">{currentMovie.title}</h2>
         </div>
         <div className="comments-section">
           <h3>Comments</h3>

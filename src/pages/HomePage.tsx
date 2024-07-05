@@ -26,18 +26,20 @@ const HomePage = () => {
                   </div>
                   <div className="movie-info">
                     <div className="movie-title">{movie.title}</div>
-                    <img
-                      src={trailerIcon}
-                      alt="Trailer"
-                      className="trailer-icon"
-                    />
-                    <Link to={`/comments/${movie.id}`}>
+                    <div className="movie-icons">
                       <img
-                        src={commentIcon}
-                        alt="Comment"
-                        className="comment-icon"
+                        src={trailerIcon}
+                        alt="Trailer"
+                        className="trailer-icon"
                       />
-                    </Link>
+                      <Link to={`/comments/${movie.id}`}>
+                        <img
+                          src={commentIcon}
+                          alt="Comment"
+                          className="comment-icon"
+                        />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}

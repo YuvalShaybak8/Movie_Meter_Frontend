@@ -103,11 +103,20 @@ h2 {
   font-size: 1rem;
 }
 
+.movie-info {
+  padding: 1.4rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .movie-title {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2c3e50;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .movie-year {
@@ -115,9 +124,10 @@ h2 {
   font-size: 0.9rem;
 }
 
-.movie-info {
-  padding: 1rem;
-  position: relative;
+.movie-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .trailer-icon {
