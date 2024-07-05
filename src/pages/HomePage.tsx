@@ -1,42 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import "../styles/HomePage.css";
 import { movies } from "../data/movieDatabase.js";
 import trailerIcon from "../assets/trailer_icon.png";
-import axios from "axios";
-import Modal from "react-modal";
-
-const API_KEY = "b04e7ba5db91cb63b41243b69801c5f1";
+import commentIcon from "../assets/comment_icon.png";
 
 const HomePage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [videoUrl, setVideoUrl] = useState("");
-
-  const fetchTrailer = async (movieId) => {
-    try {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}`
-      );
-      const trailer = response.data.results.find(
-        (video) => video.type === "Trailer"
-      );
-      if (trailer) {
-        setVideoUrl(`https://www.youtube.com/watch?v=${trailer.key}`);
-        setIsOpen(true);
-      } else {
-        alert("Trailer not available");
-      }
-    } catch (error) {
-      console.error("Error fetching trailer:", error);
-      alert("Failed to fetch trailer");
-    }
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-    setVideoUrl("");
-  };
-
   return (
     <Layout>
       <div className="home-page">
@@ -61,6 +31,13 @@ const HomePage = () => {
                       alt="Trailer"
                       className="trailer-icon"
                     />
+                    <Link to={`/comments/${movie.id}`}>
+                      <img
+                        src={commentIcon}
+                        alt="Comment"
+                        className="comment-icon"
+                      />
+                    </Link>
                   </div>
                 </div>
               ))}
