@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  useLocation,
+  Routes,
+} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AuthContainer from "./components/AuthContainer";
 import CreateRating from "./pages/CreateRating";
