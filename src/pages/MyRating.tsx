@@ -1,31 +1,37 @@
-import React from "react";
-import Layout from "../components/Layout";
+import React, { useState } from "react";
 import "../styles/MyRating.css";
-import { movies } from "../data/movieDatabase";
+import Layout from "../components/Layout";
+import { movies } from "../data/movieDatabase.js";
+import MovieCard from "../components/MovieCard.js";
 
 const MyRating = () => {
+  const [ratings, setRatings] = useState<{ [key: number]: number }>({});
+
+  const handleRateMovie = (movieId: number, rating: number) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [movieId]: rating,
+    }));
+  };
+
   return (
     <Layout>
-      <div className="myRatingPage">
-        <div className="contentWrapper">
-          <div className="welcomeSection">
+      <div className="my-rating-page">
+        <div className="content-wrapper-my-rating">
+          <div className="welcome-section">
             <h1>Welcome to Your Ratings</h1>
-            <p>See your movies that you Rate</p>
+            <p>See the movies that you've rated</p>
           </div>
-          <section className="featuredMovies">
-            <h2>My Rating Feed</h2>
-            <div className="movieGrid">
+          <section className="featured-movies">
+            <h2>My Ratings</h2>
+            <div className="movie-grid">
               {movies.map((movie) => (
-                <div key={movie.id} className="movieCard">
-                  <div className="moviePoster">
-                    <img src={movie.image} alt={movie.title} />
-                    <div className="movieRating">{movie.rating}</div>
-                  </div>
-                  <div className="movieInfo">
-                    <div className="movieTitle">{movie.title}</div>
-                    <div className="movieYear">{movie.year}</div>
-                  </div>
-                </div>
+                <MovieCard
+                  key={movie.id}
+                  movie={movie}
+                  userRating={ratings[movie.id] || 0}
+                  onRateMovie={handleRateMovie}
+                />
               ))}
             </div>
           </section>

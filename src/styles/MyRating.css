@@ -2,14 +2,16 @@ html,
 body {
   height: 100%;
   overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
 }
 
-.myRatingPage {
-  font-family: "Roboto", sans-serif;
+.my-rating-page {
   min-height: 100vh;
 }
 
-.contentWrapper {
+.content-wrapper-my-rating {
   background-image: url("../assets/page_background/my_rating_background1.jpg");
   background-size: cover;
   background-position: center;
@@ -18,9 +20,10 @@ body {
   padding: 2rem;
   box-sizing: border-box;
   overflow-y: auto;
+  position: relative;
 }
 
-.contentWrapper::before {
+.content-wrapper-my-rating::before {
   content: "";
   position: fixed;
   top: 0;
@@ -32,7 +35,7 @@ body {
   z-index: -1;
 }
 
-.welcomeSection {
+.welcome-section {
   text-align: center;
   margin-bottom: 3rem;
 }
@@ -43,7 +46,7 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
-.welcomeSection p {
+.welcome-section p {
   color: #ffffff;
   font-size: 1.2rem;
 }
@@ -55,73 +58,9 @@ h2 {
   text-align: center;
 }
 
-.movieGrid {
+.movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 2rem;
   overflow-y: auto;
-}
-
-.movieCard {
-  background-color: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.movieCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.moviePoster {
-  position: relative;
-  overflow: hidden;
-}
-
-.moviePoster img {
-  width: 100%;
-  height: 330px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.movieCard:hover .moviePoster img {
-  transform: scale(1.05);
-}
-
-.movieInfo {
-  padding: 1.5rem;
-}
-
-.movieRating {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: rgba(243, 156, 18, 0.9);
-  color: #fff;
-  font-weight: bold;
-  padding: 0.5rem 0.75rem;
-  border-radius: 20px;
-  font-size: 1rem;
-}
-
-.movieTitle {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-}
-
-.movieYear {
-  color: #7f8c8d;
-  font-size: 0.9rem;
-}
-
-@media screen and (max-height: 800px) {
-  .contentWrapper {
-    height: auto;
-    min-height: 100vh;
-  }
 }
