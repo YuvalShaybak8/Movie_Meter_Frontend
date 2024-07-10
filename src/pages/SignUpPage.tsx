@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash, FaEnvelope, FaUser } from "react-icons/fa";
 import "../styles/AuthStyles.css";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/apiService";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic
+    console.log("Form submitted with data:", { username, email, password }); // Add this line
+    try {
+      await registerUser({ username, email, password });
+      navigate("/home");
+    } catch (error) {
+      console.error("Error signing up:", error);
+    }
   };
 
   return (
