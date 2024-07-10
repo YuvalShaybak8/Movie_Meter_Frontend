@@ -2,19 +2,30 @@ import React, { useState } from "react";
 import { FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 import "../styles/AuthStyles.css";
 import googleIcon from "../assets/google_icon.png";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/apiService";
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    // If login is successful, navigate to the home page
-    navigate("/home");
+    try {
+      const response = await loginUser({ email, password });
+      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("tokens", JSON.stringify(response.tokens));
+      navigate("/home");
+    } catch (error) {
+      setError("Invalid email or password. Please try again.");
+    }
   };
 
   return (
@@ -54,15 +65,13 @@ const LoginPage: React.FC = () => {
           required
         />
         {showPassword ? (
-          <FaEyeSlash
-            className="InputIcon"
-            onClick={() => setShowPassword(false)}
-          />
+          <FaEye className="InputIcon" onClick={handleTogglePassword} />
         ) : (
-          <FaEye className="InputIcon" onClick={() => setShowPassword(true)} />
+          <FaEyeSlash className="InputIcon" onClick={handleTogglePassword} />
         )}
       </div>
-      <button className="Button" type="submit">
+      {error && <p className="Error">{error}</p>}
+      <button type="submit" className="Button">
         Login
       </button>
     </form>
