@@ -3,7 +3,7 @@ import { FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 import "../styles/AuthStyles.css";
 import googleIcon from "../assets/google_icon.png";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../services/apiService";
+import { useAuth } from "../Context/AuthContext";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +11,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -19,7 +20,7 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await loginUser({ email, password });
+      const response = await login({ email, password });
       localStorage.setItem("user", JSON.stringify(response.user));
       localStorage.setItem("tokens", JSON.stringify(response.tokens));
       navigate("/home");

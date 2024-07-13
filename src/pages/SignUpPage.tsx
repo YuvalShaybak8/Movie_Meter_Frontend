@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash, FaEnvelope, FaUser } from "react-icons/fa";
 import "../styles/AuthStyles.css";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../services/apiService";
+import { useAuth } from "../Context/AuthContext";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
@@ -10,6 +10,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -17,9 +18,9 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted with data:", { username, email, password }); // Add this line
+    console.log("Form submitted with data:", { username, email, password });
     try {
-      await registerUser({ username, email, password });
+      await register({ username, email, password });
       navigate("/home");
     } catch (error) {
       console.error("Error signing up:", error);
