@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import "../styles/MyProfile.css";
-import { getUserById } from "../services/apiService";
 import { useAuth } from "../Context/AuthContext";
+import { getUserById } from "../services/apiService";
 
 const MyProfile = () => {
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [userData, setUserData] = useState({
     username: "",
@@ -15,20 +14,28 @@ const MyProfile = () => {
   });
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    console.log("Current user from AuthContext:", user);
+    const fetchUserData = async () => {
       if (user && user._id) {
+        console.log("Fetching user data for ID:", user._id);
         try {
-          const userDetails = await getUserById(user._id);
-          setUserData(userDetails);
-          setUser(userDetails); // Update context with user data
+          const fetchedUser = await getUserById(user._id);
+          console.log("Fetched user info:", fetchedUser);
+          setUserData({
+            username: fetchedUser.username,
+            email: fetchedUser.email,
+            profilePic: fetchedUser.profilePic,
+          });
         } catch (error) {
-          console.error("Error fetching user details:", error);
+          console.error("Error fetching user data:", error);
         }
+      } else {
+        console.log("User or user._id is not available");
       }
     };
 
-    fetchUserDetails();
-  }, [user, setUser]);
+    fetchUserData();
+  }, [user]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -36,11 +43,11 @@ const MyProfile = () => {
     }
   };
 
-  if (!user) {
-    return <div>Loading...</div>; // Display a loading state while fetching user data
-  }
+  console.log("Current userData state:", userData);
 
-  console.log("User Data in MyProfile:", user);
+  if (!user) {
+    return <div>Loading user data...</div>;
+  }
 
   return (
     <Layout>
@@ -55,9 +62,9 @@ const MyProfile = () => {
                   alt="Profile"
                   className="profileImage"
                 />
-              ) : user.profilePic ? (
+              ) : userData.profilePic ? (
                 <img
-                  src={user.profilePic}
+                  src={userData.profilePic}
                   alt="Profile"
                   className="profileImage"
                 />
@@ -88,13 +95,22 @@ const MyProfile = () => {
                 <input
                   type="text"
                   id="username"
-                  value={user.username}
+                  value={userData.username}
                   readOnly
                 />
               </div>
               <div className="userInfoItem">
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" value={user.email} readOnly />
+                <input
+                  type="email"
+                  id="email"
+                  value={userData.email}
+                  readOnly
+                />
+              </div>
+              <div className="userInfoItem">
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" value="******" readOnly />
               </div>
             </div>
           </div>

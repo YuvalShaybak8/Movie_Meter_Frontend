@@ -59,7 +59,11 @@ export const AuthProvider = ({ children }: Props) => {
         password,
       });
       console.log("Login response:", res.data);
-      setUser(res.data.user);
+      setUser(res.data.user); // Now setting the user data
+      // Store tokens in localStorage or secure storage
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
+      console.log("User set in context:", res.data.user);
       return res.data;
     } catch (error) {
       console.error("Login error:", error);
@@ -76,12 +80,22 @@ export const AuthProvider = ({ children }: Props) => {
     email: string;
     password: string;
   }) => {
-    const res = await axios.post(`/auth/register`, {
-      username,
-      email,
-      password,
-    });
-    return res.data;
+    try {
+      const res = await axios.post(`/auth/register`, {
+        username,
+        email,
+        password,
+      });
+      setUser(res.data.user); // Now setting the user data
+      // Store tokens in localStorage or secure storage
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
+      console.log("Register response:", res.data);
+      return res.data;
+    } catch (error) {
+      console.error("Register error:", error);
+      throw error;
+    }
   };
 
   const updateEmail = async (email: string) => {

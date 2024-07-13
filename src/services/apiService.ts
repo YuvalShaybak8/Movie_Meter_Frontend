@@ -37,6 +37,7 @@ export const LoginUser = async (userData: {
 export const getUserById = async (userId: string) => {
   try {
     const response = await axios.get(`${API_URL}/users/${userId}`);
+    console.log("Response : ", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user details:", error);
