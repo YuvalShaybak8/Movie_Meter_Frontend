@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/HomePage.css";
 import Layout from "../components/Layout";
-import { movies } from "../data/movieDatabase.js";
 import MovieCard from "../components/MovieCard";
+import { getAllRatings } from "../services/apiService";
 
 const HomePage = () => {
-  const [ratings, setRatings] = useState<{ [key: number]: number }>({});
+  const [ratings, setRatings] = useState([]);
+  const [userRatings, setUserRatings] = useState<{ [key: string]: number }>({});
 
-  const handleRateMovie = (movieId: number, rating: number) => {
-    setRatings((prevRatings) => ({
+  useEffect(() => {
+    const fetchRatings = async () => {
+      try {
+        const fetchedRatings = await getAllRatings();
+        setRatings(fetchedRatings);
+      } catch (error) {
+        console.error("Error fetching ratings:", error);
+      }
+    };
+
+    fetchRatings();
+  }, []);
+
+  const handleRateMovie = (movieId: string, rating: number) => {
+    setUserRatings((prevRatings) => ({
       ...prevRatings,
       [movieId]: rating,
     }));
@@ -25,11 +39,11 @@ const HomePage = () => {
           <section className="featured-movies">
             <h2>The Rating Feed</h2>
             <div className="movie-grid">
-              {movies.map((movie) => (
+              {ratings.map((movie) => (
                 <MovieCard
-                  key={movie.id}
+                  key={movie._id}
                   movie={movie}
-                  userRating={ratings[movie.id] || 0}
+                  userRating={userRatings[movie._id] || 0}
                   onRateMovie={handleRateMovie}
                 />
               ))}

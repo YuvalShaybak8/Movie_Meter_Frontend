@@ -59,3 +59,17 @@ export const createRating = async (formData: FormData) => {
     throw error;
   }
 };
+
+export const getAllRatings = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/ratings`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching ratings:", error);
+    throw error;
+  }
+};

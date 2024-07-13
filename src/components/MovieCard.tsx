@@ -11,16 +11,17 @@ import ratingOut from "../assets/rating_out.png";
 import myRating from "../assets/my_rating.png";
 
 const API_KEY = "b04e7ba5db91cb63b41243b69801c5f1";
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 interface MovieCardProps {
   movie: {
-    id: number;
+    _id: string;
     title: string;
-    image: string;
+    movie_image: string;
     rating: number;
   };
   userRating: number;
-  onRateMovie: (movieId: number, rating: number) => void;
+  onRateMovie: (movieId: string, rating: number) => void;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
@@ -77,7 +78,10 @@ const MovieCard: React.FC<MovieCardProps> = ({
     <>
       <div className="movie-card">
         <div className="movie-poster">
-          <img src={movie.image} alt={movie.title} />
+          <img
+            src={`${API_URL}/uploads/${movie.movie_image}`}
+            alt={movie.title}
+          />
           <div className="movie-rating">
             <img src={ratingIn} alt="Rating" className="rating-icon" />
             <span className="rating-text">{movie.rating}</span>
@@ -97,7 +101,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
         <div className="movie-info">
           <div className="movie-title">{movie.title}</div>
           <div className="movie-icons">
-            <Link to={`/comments/${movie.id}`}>
+            <Link to={`/comments/${movie._id}`}>
               <img src={commentIcon} alt="Comment" className="comment-icon" />
             </Link>
             <button
