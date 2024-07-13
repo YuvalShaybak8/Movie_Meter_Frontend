@@ -44,3 +44,18 @@ export const getUserById = async (userId: string) => {
     throw error;
   }
 };
+
+export const createRating = async (formData: FormData) => {
+  try {
+    const response = await axios.post(`${API_URL}/ratings`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating rating:", error);
+    throw error;
+  }
+};
