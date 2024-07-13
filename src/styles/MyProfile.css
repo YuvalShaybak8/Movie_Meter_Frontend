@@ -1,3 +1,135 @@
+/* body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.backgroundWrapper {
+  background-image: url("../assets/page_background/my_profile_background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+.myProfilePage {
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.myProfilePage h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.profileContent {
+  display: flex;
+  gap: 2rem;
+}
+
+.profilePicture {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profileImage,
+.imagePlaceholder {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.imagePlaceholder {
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  color: #757575;
+  cursor: pointer;
+}
+
+.uploadButton {
+  background-color: #3498db;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.uploadButton:hover {
+  background-color: #2980b9;
+}
+
+.userInfo {
+  flex: 2;
+}
+
+.userInfoItem {
+  margin-bottom: 1.5rem;
+}
+
+.userInfoItem label {
+  display: block;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 0.5rem;
+}
+
+.userInfoItem input {
+  width: 80%;
+  padding: 0.75rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #34495e;
+}
+
+.userInfoItem input:read-only {
+  background-color: #ecf0f1;
+}
+
+.updateButton {
+  background-color: #2ecc71;
+  color: white;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto;
+}
+
+.updateButton:hover {
+  background-color: #27ae60;
+} */
+
+
+/* MyProfile.css */
 body,
 html {
   margin: 0;

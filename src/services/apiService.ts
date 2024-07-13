@@ -44,3 +44,18 @@ export const getUserById = async (userId: string) => {
     throw error;
   }
 };
+
+// export const updateUser = async (userId: string, username?: string, password?: string) => {
+//   const response = await axios.put('/api/user/update', { userId, username, password });
+//   return response.data;
+// };
+
+export const updateUser = async (userId: string, username?: string, password?: string) => {
+  try {
+    const response = await axios.put('/updateUser', { userId, username, password });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
