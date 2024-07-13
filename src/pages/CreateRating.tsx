@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import "../styles/CreateRating.css";
 import { FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { createRating } from "../services/apiService";
+import { useAuth } from "../Context/AuthContext";
 
 const CreateRating = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [movieName, setMovieName] = useState("");
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
@@ -15,10 +20,31 @@ const CreateRating = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log({ movieName, rating, image });
+    if (!user || !image) return;
+
+    const formData = new FormData();
+    formData.append("title", movieName);
+    formData.append("rating", rating.toString());
+    formData.append("movie_image", image);
+    formData.append("owner", user._id);
+
+    try {
+      console.log("Submitting rating:", {
+        title: movieName,
+        rating,
+        image,
+        owner: user._id,
+      });
+      console.log("the FormData is", formData.get("title"));
+      const result = await createRating(formData);
+      console.log("Rating submission result:", result);
+      navigate("/home");
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+      // Handle error (e.g., show error message to user)
+    }
   };
 
   return (
