@@ -50,12 +50,20 @@ export const getUserById = async (userId: string) => {
 //   return response.data;
 // };
 
-export const updateUser = async (userId: string, username?: string, password?: string) => {
+export const updateUser = async (
+  userId: string,
+  username?: string,
+  password?: string
+) => {
   try {
-    const response = await axios.put('/updateUser', { userId, username, password });
+    const response = await axios.put("/updateUser", {
+      userId,
+      username,
+      password,
+    });
     return response.data;
   } catch (error) {
-    console.error('Error updating user:', error);
+    console.error("Error updating user:", error);
     throw error;
   }
 };
@@ -85,6 +93,20 @@ export const getAllRatings = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching ratings:", error);
+    throw error;
+  }
+};
+
+export const getUserRatings = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/ratings/myRatings`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user ratings:", error);
     throw error;
   }
 };

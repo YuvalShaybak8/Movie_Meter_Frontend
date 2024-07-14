@@ -90,7 +90,7 @@ const CommentsPage: React.FC = () => {
             className="movie-image"
           />
           <h2 className="movie-title-comment">{movie.title}</h2>
-          <p className="movie-rating">Rating: {movie.rating}</p>
+          {/* <p className="movie-rating">Rating: {movie.rating}</p> */}
         </div>
         <div className="comments-section">
           <h3>Comments</h3>
