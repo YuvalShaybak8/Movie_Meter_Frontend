@@ -1,74 +1,90 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Layout from "../components/Layout";
 import "../styles/EditRatingPage.css";
 import { FaStar } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
 import {
   getRatingById,
   updateRating,
   deleteRating,
 } from "../services/apiService";
-import { useAuth } from "../Context/AuthContext";
 
 const EditRatingPage = () => {
-  const { user } = useAuth();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [movieName, setMovieName] = useState("");
-  const [rating, setRating] = useState(0);
-  const [image, setImage] = useState<File | null>(null);
-  const [existingImage, setExistingImage] = useState("");
+  const location = useLocation();
+  const movieFromState = location.state?.movie;
+
+  const [ratingData, setRatingData] = useState({
+    title: "",
+    rating: 0,
+    movie_image: "",
+  });
+  const [newImage, setNewImage] = useState<File | null>(null);
   const [hover, setHover] = useState(0);
 
   useEffect(() => {
     const fetchRating = async () => {
-      try {
-        console.log("Fetching rating with ID:", id);
-        const data = await getRatingById(id);
-        console.log("Fetched rating data:", data);
-        setMovieName(data.title);
-        setRating(data.rating);
-        setExistingImage(data.movie_image);
-      } catch (error) {
-        console.error("Error fetching rating:", error);
+      if (movieFromState) {
+        setRatingData({
+          title: movieFromState.title,
+          rating: movieFromState.rating,
+          movie_image: movieFromState.movie_image,
+        });
+      } else if (id) {
+        try {
+          const data = await getRatingById(id);
+          setRatingData({
+            title: data.title,
+            rating: data.rating,
+            movie_image: data.movie_image,
+          });
+        } catch (error) {
+          console.error("Error fetching rating:", error);
+        }
       }
     };
 
-    if (id) {
-      fetchRating();
-    }
-  }, [id]);
+    fetchRating();
+  }, [id, movieFromState]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+      setNewImage(e.target.files[0]);
     }
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRatingData({ ...ratingData, title: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("title", movieName);
-    formData.append("rating", rating.toString());
-    if (image) {
-      formData.append("movie_image", image);
-    }
+    if (id) {
+      const formData = new FormData();
+      formData.append("title", ratingData.title);
+      formData.append("rating", ratingData.rating.toString());
+      if (newImage) {
+        formData.append("movie_image", newImage);
+      }
 
-    try {
-      await updateRating(id, formData);
-      navigate("/my-rating");
-    } catch (error) {
-      console.error("Error updating rating:", error);
+      try {
+        await updateRating(id, formData);
+        navigate("/my-rating");
+      } catch (error) {
+        console.error("Error updating rating:", error);
+      }
     }
   };
 
   const handleDelete = async () => {
-    try {
-      await deleteRating(id);
-      navigate("/my-rating");
-    } catch (error) {
-      console.error("Error deleting rating:", error);
+    if (id) {
+      try {
+        await deleteRating(id);
+        navigate("/my-rating");
+      } catch (error) {
+        console.error("Error deleting rating:", error);
+      }
     }
   };
 
@@ -78,23 +94,17 @@ const EditRatingPage = () => {
         <h1 className="page-title">Edit Your Rating</h1>
         <form className="form" onSubmit={handleSubmit}>
           <div className="image-upload">
-            {image ? (
-              <img
-                src={URL.createObjectURL(image)}
-                alt="Uploaded"
-                className="uploaded-image"
-              />
-            ) : existingImage ? (
-              <img
-                src={`${
-                  import.meta.env.VITE_REACT_APP_API_URL
-                }/uploads/${existingImage}`}
-                alt="Movie"
-                className="uploaded-image"
-              />
-            ) : (
-              <div>No image available</div>
-            )}
+            <img
+              src={
+                newImage
+                  ? URL.createObjectURL(newImage)
+                  : `${import.meta.env.VITE_REACT_APP_API_URL}/uploads/${
+                      ratingData.movie_image
+                    }`
+              }
+              alt="Movie"
+              className="uploaded-image"
+            />
             <input
               type="file"
               id="fileInput"
@@ -115,8 +125,8 @@ const EditRatingPage = () => {
               <input
                 type="text"
                 id="movieName"
-                value={movieName}
-                onChange={(e) => setMovieName(e.target.value)}
+                value={ratingData.title}
+                onChange={handleTitleChange}
                 placeholder="Enter movie name"
                 required
               />
@@ -132,12 +142,17 @@ const EditRatingPage = () => {
                         type="radio"
                         name="rating"
                         value={ratingValue}
-                        onClick={() => setRating(ratingValue)}
+                        onClick={() =>
+                          setRatingData({ ...ratingData, rating: ratingValue })
+                        }
+                        checked={ratingValue === ratingData.rating}
                         style={{ display: "none" }}
                       />
                       <FaStar
                         className={`star ${
-                          ratingValue <= (hover || rating) ? "active" : ""
+                          ratingValue <= (hover || ratingData.rating)
+                            ? "active"
+                            : ""
                         }`}
                         onMouseEnter={() => setHover(ratingValue)}
                         onMouseLeave={() => setHover(0)}

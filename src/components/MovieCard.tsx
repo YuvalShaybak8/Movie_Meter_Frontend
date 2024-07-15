@@ -10,7 +10,7 @@ import ratingIn from "../assets/rating_in.png";
 import ratingOut from "../assets/rating_out.png";
 import myRating from "../assets/my_rating.png";
 
-const API_KEY = "b04e7ba5db91cb63b41243b69801c5f1";
+const API_KEY = import.meta.env.VITE_API_KEY;
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 interface MovieCardProps {
@@ -106,7 +106,13 @@ const MovieCard: React.FC<MovieCardProps> = ({
         <div className="movie-info">
           <div className="movie-title">{movie.title}</div>
           {isMyRatingsPage && (
-            <Link to={`/editRating/${movie._id}`} className="edit-button">
+            <Link
+              to={{
+                pathname: `/editRating/${movie._id}`,
+                state: { movie },
+              }}
+              className="edit-button"
+            >
               Edit
             </Link>
           )}

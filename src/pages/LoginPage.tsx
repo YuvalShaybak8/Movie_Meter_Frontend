@@ -4,6 +4,10 @@ import "../styles/AuthStyles.css";
 import googleIcon from "../assets/google_icon.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -29,20 +33,42 @@ const LoginPage = () => {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    try {
+      const response = await axios.post(`${API_URL}/auth/google`, {
+        credential: credentialResponse.credential,
+      });
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      navigate("/home");
+    } catch (error) {
+      setError("Google sign-in failed. Please try again.");
+    }
+  };
+
   return (
     <form className="Form" onSubmit={handleSubmit}>
       <h1 className="Heading">Login</h1>
       <div className="SocialIcons">
-        <button
-          type="button"
-          style={{ background: "none", border: "none", cursor: "pointer" }}
-        >
-          <img
-            src={googleIcon}
-            alt="Google Sign-In"
-            style={{ width: "30px", height: "30px" }}
-          />
-        </button>
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={() => {
+            setError("Google sign-in failed. Please try again.");
+          }}
+          render={({ onClick }) => (
+            <button
+              type="button"
+              onClick={onClick}
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+            >
+              <img
+                src={googleIcon}
+                alt="Google Sign-In"
+                style={{ width: "30px", height: "30px" }}
+              />
+            </button>
+          )}
+        />
       </div>
       <span className="SmallText">or use your email account</span>
       <div className="InputContainer">
