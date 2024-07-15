@@ -88,6 +88,44 @@ export const getUserRatings = async () => {
   }
 };
 
+export const getRatingById = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/ratings/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching rating by ID:", error);
+    throw error;
+  }
+};
+
+export const updateRating = async (id: string, formData: FormData) => {
+  try {
+    const response = await axios.put(`${API_URL}/ratings/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating rating:", error);
+    throw error;
+  }
+};
+
+export const deleteRating = async (id: string) => {
+  try {
+    const response = await axios.delete(`${API_URL}/ratings/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting rating:", error);
+    throw error;
+  }
+};
 export const updateUser = async (userId: string, formData: FormData) => {
   try {
     const response = await axios.put(`${API_URL}/users/${userId}`, formData, {

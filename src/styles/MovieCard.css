@@ -90,9 +90,10 @@
 
 .movie-icons {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
+  gap: 10px; /* Add some space between the icons */
 }
 
 .trailer-button {
@@ -122,6 +123,26 @@
   position: absolute;
   bottom: 4px;
   left: 4px;
+}
+
+.edit-button {
+  position: absolute;
+  bottom: 7px;
+  background-color: #f0ad4e;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  margin-top: 0rem;
+  margin-right: 20px;
+}
+
+.edit-button:hover {
+  background-color: #ec971f;
 }
 
 /* Modal styles */
@@ -245,5 +266,5 @@ iframe {
 }
 
 .rate-button:hover {
-  background-color: #2980b9;
+  background-color: hsl(204, 64%, 44%);
 }

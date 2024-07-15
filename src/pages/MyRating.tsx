@@ -3,8 +3,10 @@ import "../styles/MyRating.css";
 import Layout from "../components/Layout";
 import { getUserRatings } from "../services/apiService";
 import MovieCard from "../components/MovieCard";
+import { useAuth } from "../Context/AuthContext";
 
 const MyRating = () => {
+  const { user } = useAuth();
   const [ratings, setRatings] = useState([]);
   const [userRatings, setUserRatings] = useState<{ [key: string]: number }>({});
 
@@ -19,7 +21,7 @@ const MyRating = () => {
     };
 
     fetchUserRatings();
-  }, []);
+  }, [user]);
 
   const handleRateMovie = (movieId: string, rating: number) => {
     setUserRatings((prevRatings) => ({
@@ -43,8 +45,9 @@ const MyRating = () => {
                 <MovieCard
                   key={rating._id}
                   movie={rating}
-                  userRating={userRatings[rating._id] || 0}
+                  userRating={userRatings[rating._id] || rating.rating}
                   onRateMovie={handleRateMovie}
+                  isMyRatingsPage={true} // Pass this prop
                 />
               ))}
             </div>

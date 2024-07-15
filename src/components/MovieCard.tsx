@@ -22,12 +22,14 @@ interface MovieCardProps {
   };
   userRating: number;
   onRateMovie: (movieId: string, rating: number) => void;
+  isMyRatingsPage?: boolean;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
   movie,
   userRating,
   onRateMovie,
+  isMyRatingsPage = false,
 }) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -100,6 +102,11 @@ const MovieCard: React.FC<MovieCardProps> = ({
         </div>
         <div className="movie-info">
           <div className="movie-title">{movie.title}</div>
+          {isMyRatingsPage && (
+            <Link to={`/editRating/${movie._id}`} className="edit-button">
+              Edit
+            </Link>
+          )}
           <div className="movie-icons">
             <Link to={`/comments/${movie._id}`}>
               <img src={commentIcon} alt="Comment" className="comment-icon" />
