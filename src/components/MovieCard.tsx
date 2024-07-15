@@ -19,6 +19,7 @@ interface MovieCardProps {
     title: string;
     movie_image: string;
     rating: number;
+    commentsCount?: number;
   };
   userRating: number;
   onRateMovie: (movieId: string, rating: number) => void;
@@ -88,17 +89,19 @@ const MovieCard: React.FC<MovieCardProps> = ({
             <img src={ratingIn} alt="Rating" className="rating-icon" />
             <span className="rating-text">{movie.rating}</span>
           </div>
-          <div className="movie-rating-top-left">
-            <img
-              src={userRating ? myRating : ratingOut}
-              alt="Rating"
-              className="rating-icon"
-              onClick={handleRatingClick}
-            />
-            {userRating > 0 && (
-              <span className="my-rating-text">{userRating}</span>
-            )}
-          </div>
+          {!isMyRatingsPage && (
+            <div className="movie-rating-top-left">
+              <img
+                src={userRating ? myRating : ratingOut}
+                alt="Rating"
+                className="rating-icon"
+                onClick={handleRatingClick}
+              />
+              {userRating > 0 && (
+                <span className="my-rating-text">{userRating}</span>
+              )}
+            </div>
+          )}
         </div>
         <div className="movie-info">
           <div className="movie-title">{movie.title}</div>
@@ -108,9 +111,14 @@ const MovieCard: React.FC<MovieCardProps> = ({
             </Link>
           )}
           <div className="movie-icons">
-            <Link to={`/comments/${movie._id}`}>
-              <img src={commentIcon} alt="Comment" className="comment-icon" />
-            </Link>
+            <div className="movie-actions">
+              <Link to={`/comments/${movie._id}`} className="comment-link">
+                <img src={commentIcon} alt="Comment" className="comment-icon" />
+                {movie.commentsCount > 0 && (
+                  <span className="comments-count">{movie.commentsCount}</span>
+                )}
+              </Link>
+            </div>
             <button
               className="trailer-button"
               onClick={() => fetchTrailer(movie.title)}

@@ -44,7 +44,10 @@ const MyRating = () => {
               {ratings.map((rating) => (
                 <MovieCard
                   key={rating._id}
-                  movie={rating}
+                  movie={{
+                    ...rating,
+                    commentsCount: rating.commentsCount,
+                  }}
                   userRating={userRatings[rating._id] || rating.rating}
                   onRateMovie={handleRateMovie}
                   isMyRatingsPage={true} // Pass this prop

@@ -42,7 +42,10 @@ const HomePage = () => {
               {ratings.map((movie) => (
                 <MovieCard
                   key={movie._id}
-                  movie={movie}
+                  movie={{
+                    ...movie,
+                    commentsCount: movie.commentsCount,
+                  }}
                   userRating={userRatings[movie._id] || 0}
                   onRateMovie={handleRateMovie}
                 />

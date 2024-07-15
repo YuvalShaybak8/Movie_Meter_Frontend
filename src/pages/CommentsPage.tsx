@@ -3,15 +3,23 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
 import "../styles/CommentsPage.css";
+import { useAuth } from "../Context/AuthContext";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+
+interface Comment {
+  userId: string;
+  username: string;
+  comment: string;
+  createdAt: Date;
+}
 
 interface Movie {
   _id: string;
   title: string;
   rating: number;
   movie_image: string;
-  comments: string[];
+  comments: Comment[];
 }
 
 const CommentsPage: React.FC = () => {
@@ -20,6 +28,7 @@ const CommentsPage: React.FC = () => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [newComment, setNewComment] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -47,14 +56,12 @@ const CommentsPage: React.FC = () => {
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newComment.trim() || !id) return;
+    if (!newComment.trim() || !id || !user) return;
 
     try {
-      const response = await axios.put(
-        `${API_URL}/ratings/${id}`,
-        {
-          comment: newComment,
-        },
+      const response = await axios.post(
+        `${API_URL}/ratings/${id}/comment`,
+        { comment: newComment },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -90,14 +97,15 @@ const CommentsPage: React.FC = () => {
             className="movie-image"
           />
           <h2 className="movie-title-comment">{movie.title}</h2>
-          {/* <p className="movie-rating">Rating: {movie.rating}</p> */}
         </div>
         <div className="comments-section">
           <h3>Comments</h3>
           <div className="comments-list">
-            {movie.comments.map((comment, index) => (
+            {movie?.comments.map((comment, index) => (
               <div key={index} className="comment">
-                <p>{comment}</p>
+                <p>
+                  <strong>{comment.username}:</strong> {comment.comment}
+                </p>
               </div>
             ))}
           </div>

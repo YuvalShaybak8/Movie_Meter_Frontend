@@ -126,6 +126,7 @@ export const deleteRating = async (id: string) => {
     throw error;
   }
 };
+
 export const updateUser = async (userId: string, formData: FormData) => {
   try {
     const response = await axios.put(`${API_URL}/users/${userId}`, formData, {
@@ -137,6 +138,24 @@ export const updateUser = async (userId: string, formData: FormData) => {
     return response.data;
   } catch (error) {
     console.error("Error updating user:", error);
+    throw error;
+  }
+};
+
+export const addComment = async (ratingId: string, comment: string) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/ratings/${ratingId}/comment`,
+      { comment },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding comment:", error);
     throw error;
   }
 };
