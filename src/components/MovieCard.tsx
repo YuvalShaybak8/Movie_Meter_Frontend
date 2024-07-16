@@ -20,10 +20,12 @@ interface MovieCardProps {
     movie_image: string;
     rating: number;
     commentsCount?: number;
+    owner: string;
   };
   userRating: number;
   onRateMovie: (movieId: string, rating: number) => void;
   isMyRatingsPage?: boolean;
+  currentUser: any;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
@@ -31,6 +33,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
   userRating,
   onRateMovie,
   isMyRatingsPage = false,
+  currentUser,
 }) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -73,9 +76,12 @@ const MovieCard: React.FC<MovieCardProps> = ({
   };
 
   const handleRateMovie = () => {
-    onRateMovie(movie.id, tempUserRating);
+    onRateMovie(movie._id, tempUserRating);
     setRatingOpen(false);
   };
+
+  const showRatingIcon =
+    !isMyRatingsPage && (currentUser?._id !== movie.owner || userRating === 0);
 
   return (
     <>
@@ -89,7 +95,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
             <img src={ratingIn} alt="Rating" className="rating-icon" />
             <span className="rating-text">{movie.rating}</span>
           </div>
-          {!isMyRatingsPage && (
+          {showRatingIcon && (
             <div className="movie-rating-top-left">
               <img
                 src={userRating ? myRating : ratingOut}

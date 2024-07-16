@@ -2,24 +2,35 @@ import React, { useState, useEffect } from "react";
 import "../styles/HomePage.css";
 import Layout from "../components/Layout";
 import MovieCard from "../components/MovieCard";
-import { getAllRatings } from "../services/apiService";
+import { getAllRatings, getUserRatings } from "../services/apiService";
+import { useAuth } from "../Context/AuthContext";
 
 const HomePage = () => {
   const [ratings, setRatings] = useState([]);
   const [userRatings, setUserRatings] = useState<{ [key: string]: number }>({});
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchRatings = async () => {
       try {
         const fetchedRatings = await getAllRatings();
         setRatings(fetchedRatings);
+
+        if (user) {
+          const userRatingsData = await getUserRatings();
+          const userRatingsMap = {};
+          userRatingsData.forEach((rating) => {
+            userRatingsMap[rating._id] = rating.rating;
+          });
+          setUserRatings(userRatingsMap);
+        }
       } catch (error) {
         console.error("Error fetching ratings:", error);
       }
     };
 
     fetchRatings();
-  }, []);
+  }, [user]);
 
   const handleRateMovie = (movieId: string, rating: number) => {
     setUserRatings((prevRatings) => ({
@@ -48,6 +59,7 @@ const HomePage = () => {
                   }}
                   userRating={userRatings[movie._id] || 0}
                   onRateMovie={handleRateMovie}
+                  currentUser={user}
                 />
               ))}
             </div>
