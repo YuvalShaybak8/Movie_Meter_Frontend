@@ -26,7 +26,11 @@ const LoginPage = () => {
     try {
       const response = await login({ email, password });
       localStorage.setItem("user", JSON.stringify(response.user));
-      localStorage.setItem("tokens", JSON.stringify(response.tokens));
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("refreshToken", response.refreshToken);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.accessToken}`;
       navigate("/home");
     } catch (error) {
       setError("Invalid email or password. Please try again.");
@@ -39,7 +43,11 @@ const LoginPage = () => {
         credential: credentialResponse.credential,
       });
       localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.accessToken}`;
       navigate("/home");
     } catch (error) {
       setError("Google sign-in failed. Please try again.");

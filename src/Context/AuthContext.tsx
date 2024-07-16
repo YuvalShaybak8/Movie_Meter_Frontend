@@ -1,5 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { createContext, useContext, ReactNode, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect,
+} from "react";
 import axios from "axios";
 
 type AuthContextType = {
@@ -20,6 +25,7 @@ type AuthContextType = {
     password: string;
   }) => Promise<any>;
   updateEmail: (email: string) => Promise<any>;
+  logout: () => void;
   user: any;
   setUser: React.Dispatch<React.SetStateAction<any>>;
 };
@@ -28,23 +34,28 @@ type Props = {
   children?: ReactNode;
 };
 
-const initialValue: AuthContextType = {
-  login: async () => {},
-  register: async () => {},
-  updateEmail: async () => {},
-  user: null,
-  setUser: () => {},
-};
-
-const AuthContext = createContext<AuthContextType>(initialValue);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };
 
 export const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<any>(null);
   axios.defaults.baseURL = `http://localhost:5500`;
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const userData = localStorage.getItem("user");
+    if (token && userData) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      setUser(JSON.parse(userData));
+    }
+  }, []);
 
   const login = async ({
     email,
@@ -58,12 +69,12 @@ export const AuthProvider = ({ children }: Props) => {
         email,
         password,
       });
-      console.log("Login response:", res.data);
-      setUser(res.data.user); // Now setting the user data
-      // Store tokens in localStorage or secure storage
+      setUser(res.data.user);
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
-      console.log("User set in context:", res.data.user);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${res.data.accessToken}`;
       return res.data;
     } catch (error) {
       console.error("Login error:", error);
@@ -86,11 +97,12 @@ export const AuthProvider = ({ children }: Props) => {
         email,
         password,
       });
-      setUser(res.data.user); // Now setting the user data
-      // Store tokens in localStorage or secure storage
+      setUser(res.data.user);
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
-      console.log("Register response:", res.data);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${res.data.accessToken}`;
       return res.data;
     } catch (error) {
       console.error("Register error:", error);
@@ -105,10 +117,19 @@ export const AuthProvider = ({ children }: Props) => {
     return res.data;
   };
 
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
+    delete axios.defaults.headers.common["Authorization"];
+  };
+
   const value = {
     login,
     register,
     updateEmail,
+    logout,
     user,
     setUser,
   };
