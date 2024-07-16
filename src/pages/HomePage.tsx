@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import "../styles/HomePage.css";
 import Layout from "../components/Layout";
 import MovieCard from "../components/MovieCard";
-import { getAllRatings, getUserRatings } from "../services/apiService";
+import {
+  getAllRatings,
+  getUserRatings,
+  addUserRating,
+} from "../services/apiService";
 import { useAuth } from "../Context/AuthContext";
 
 const HomePage = () => {
@@ -32,11 +36,24 @@ const HomePage = () => {
     fetchRatings();
   }, [user]);
 
-  const handleRateMovie = (movieId: string, rating: number) => {
-    setUserRatings((prevRatings) => ({
-      ...prevRatings,
-      [movieId]: rating,
-    }));
+  const handleRateMovie = async (movieId: string, rating: number) => {
+    try {
+      const result = await addUserRating(movieId, rating);
+      setUserRatings((prevRatings) => ({
+        ...prevRatings,
+        [movieId]: rating,
+      }));
+      setRatings((prevRatings) =>
+        prevRatings.map((movie) =>
+          movie._id === movieId
+            ? { ...movie, averageRating: result.averageRating }
+            : movie
+        )
+      );
+    } catch (error) {
+      console.error("Error rating movie:", error);
+      // Handle error (e.g., show error message to user)
+    }
   };
 
   return (
@@ -55,7 +72,7 @@ const HomePage = () => {
                   key={movie._id}
                   movie={{
                     ...movie,
-                    commentsCount: movie.commentsCount,
+                    commentsCount: movie.comments.length,
                   }}
                   userRating={userRatings[movie._id] || 0}
                   onRateMovie={handleRateMovie}

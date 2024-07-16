@@ -42,11 +42,19 @@
 
 .rating-text {
   position: absolute;
-  top: 16px;
-  right: 19px;
+  top: 18px;
   color: rgb(5, 5, 5);
-  font-size: 0.87rem;
   font-weight: bold;
+}
+
+.rating-text-ten {
+  right: 16px;
+  font-size: 0.85rem;
+}
+
+.rating-text-other {
+  right: 13px;
+  font-size: 0.78rem;
 }
 
 .movie-rating-top-left {
@@ -69,6 +77,10 @@
   color: rgb(5, 5, 5);
   font-size: 0.8rem;
   font-weight: bold;
+}
+
+.my-rating-text-ten {
+  left: 7px;
 }
 
 .movie-info {

@@ -159,3 +159,41 @@ export const addComment = async (ratingId: string, comment: string) => {
     throw error;
   }
 };
+
+export const addUserRating = async (ratingId: string, rating: number) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/ratings/${ratingId}/userRating`,
+      { rating },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding user rating:", error);
+    throw error;
+  }
+};
+
+export const getUserRatingForMovie = async (
+  movieId: string,
+  userId: string
+) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/ratings/${movieId}/userRating/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response.data.rating;
+  } catch (error) {
+    console.error("Error fetching user rating for movie:", error);
+    throw error;
+  }
+};

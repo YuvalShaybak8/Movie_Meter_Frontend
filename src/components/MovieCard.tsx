@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import "../styles/MovieCard.css";
+import { addUserRating, getUserRatingForMovie } from "../services/apiService";
 
 import trailerIcon from "../assets/trailer_icon.png";
 import commentIcon from "../assets/comment_icon.png";
@@ -19,10 +20,11 @@ interface MovieCardProps {
     title: string;
     movie_image: string;
     rating: number;
+    averageRating: number;
     commentsCount?: number;
     owner: string;
+    ratingOfotherUsers: Array<{ userId: string; rating: number }>;
   };
-  userRating: number;
   onRateMovie: (movieId: string, rating: number) => void;
   isMyRatingsPage?: boolean;
   currentUser: any;
@@ -30,7 +32,6 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({
   movie,
-  userRating,
   onRateMovie,
   isMyRatingsPage = false,
   currentUser,
@@ -39,7 +40,22 @@ const MovieCard: React.FC<MovieCardProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [ratingOpen, setRatingOpen] = useState(false);
   const [hover, setHover] = useState(0);
-  const [tempUserRating, setTempUserRating] = useState(userRating);
+  const [userRating, setUserRating] = useState(0);
+  const [tempUserRating, setTempUserRating] = useState(0);
+  const [movieRating, setMovieRating] = useState(
+    movie.averageRating || movie.rating
+  );
+
+  useEffect(() => {
+    if (currentUser && currentUser._id) {
+      getUserRatingForMovie(movie._id, currentUser._id)
+        .then((rating) => {
+          setUserRating(rating);
+          setTempUserRating(rating);
+        })
+        .catch((error) => console.error("Error fetching user rating:", error));
+    }
+  }, [movie._id, currentUser]);
 
   const fetchTrailer = async (movieTitle: string) => {
     try {
@@ -72,16 +88,28 @@ const MovieCard: React.FC<MovieCardProps> = ({
   };
 
   const handleRatingClick = () => {
-    setRatingOpen(true);
+    if (userRating === 0) {
+      setRatingOpen(true);
+    }
   };
 
-  const handleRateMovie = () => {
-    onRateMovie(movie._id, tempUserRating);
-    setRatingOpen(false);
+  const handleRateMovie = async () => {
+    try {
+      const result = await addUserRating(movie._id, tempUserRating);
+      onRateMovie(movie._id, tempUserRating);
+      setRatingOpen(false);
+      setMovieRating(result.averageRating);
+      setUserRating(tempUserRating);
+    } catch (error) {
+      console.error("Error rating movie:", error);
+      // Handle error (e.g., show error message to user)
+    }
   };
 
   const showRatingIcon =
-    !isMyRatingsPage && (currentUser?._id !== movie.owner || userRating === 0);
+    currentUser &&
+    currentUser._id !== movie.owner &&
+    !movie.ratingOfotherUsers.some((r) => r.userId === currentUser._id);
 
   return (
     <>
@@ -93,18 +121,29 @@ const MovieCard: React.FC<MovieCardProps> = ({
           />
           <div className="movie-rating">
             <img src={ratingIn} alt="Rating" className="rating-icon" />
-            <span className="rating-text">{movie.rating}</span>
+            <span
+              className={`rating-text ${
+                movieRating === 10 ? "rating-text-ten" : "rating-text-other"
+              }`}
+            >
+              {movieRating === 10 ? "10" : movieRating.toFixed(1)}
+            </span>
           </div>
           {showRatingIcon && (
             <div className="movie-rating-top-left">
               <img
-                src={userRating ? myRating : ratingOut}
+                src={userRating > 0 ? myRating : ratingOut}
                 alt="Rating"
                 className="rating-icon"
                 onClick={handleRatingClick}
               />
               {userRating > 0 && (
-                <span className="my-rating-text">{userRating}</span>
+                <span
+                  className="my-rating-text"
+                  style={{ left: userRating === 10 ? "7px" : "11px" }}
+                >
+                  {userRating}
+                </span>
               )}
             </div>
           )}
