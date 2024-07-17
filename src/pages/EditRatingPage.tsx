@@ -58,21 +58,26 @@ const EditRatingPage = () => {
     setRatingData({ ...ratingData, title: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (id) {
-      const formData = new FormData();
-      formData.append("title", ratingData.title);
-      formData.append("rating", ratingData.rating.toString());
-      if (newImage) {
-        formData.append("movie_image", newImage);
-      }
+  const handleRatingChange = (newRating: number) => {
+    setRatingData({ ...ratingData, rating: newRating });
+  };
 
+  const handleUpdateRating = async () => {
+    if (id) {
       try {
+        const formData = new FormData();
+        formData.append("title", ratingData.title);
+        formData.append("rating", ratingData.rating.toString());
+        if (newImage) {
+          formData.append("movie_image", newImage);
+        }
+
         await updateRating(id, formData);
+        console.log("Rating updated successfully");
         navigate("/my-rating");
       } catch (error) {
         console.error("Error updating rating:", error);
+        alert("Failed to update rating. Please try again.");
       }
     }
   };
@@ -81,9 +86,11 @@ const EditRatingPage = () => {
     if (id) {
       try {
         await deleteRating(id);
+        console.log("Rating deleted successfully");
         navigate("/my-rating");
       } catch (error) {
         console.error("Error deleting rating:", error);
+        alert("Failed to delete rating. Please try again.");
       }
     }
   };
@@ -92,7 +99,7 @@ const EditRatingPage = () => {
     <Layout>
       <div className="edit-rating-page">
         <h1 className="page-title">Edit Your Rating</h1>
-        <form className="form" onSubmit={handleSubmit}>
+        <div className="form">
           <div className="image-upload">
             <img
               src={
@@ -142,11 +149,9 @@ const EditRatingPage = () => {
                         type="radio"
                         name="rating"
                         value={ratingValue}
-                        onClick={() =>
-                          setRatingData({ ...ratingData, rating: ratingValue })
-                        }
+                        onChange={() => handleRatingChange(ratingValue)}
                         checked={ratingValue === ratingData.rating}
-                        style={{ display: "none" }}
+                        className="star-radio-input"
                       />
                       <FaStar
                         className={`star ${
@@ -162,7 +167,7 @@ const EditRatingPage = () => {
                 })}
               </div>
             </div>
-            <button type="submit" className="submit-button">
+            <button onClick={handleUpdateRating} className="submit-button">
               Update Your Rating
             </button>
             <button
@@ -173,7 +178,7 @@ const EditRatingPage = () => {
               Delete Your Rating
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </Layout>
   );

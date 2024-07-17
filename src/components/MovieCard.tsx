@@ -152,10 +152,8 @@ const MovieCard: React.FC<MovieCardProps> = ({
           <div className="movie-title">{movie.title}</div>
           {isMyRatingsPage && (
             <Link
-              to={{
-                pathname: `/editRating/${movie._id}`,
-                state: { movie },
-              }}
+              to={`/editRating/${movie._id}`}
+              state={{ movie }}
               className="edit-button"
             >
               Edit

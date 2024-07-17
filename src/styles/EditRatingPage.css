@@ -106,19 +106,20 @@ html {
 
 .star-rating {
   display: flex;
-  justify-content: flex-start;
-  margin-top: 0.5rem;
+  align-items: center;
+}
+
+.star-radio-input {
+  display: none; /* This hides the radio button */
 }
 
 .star {
-  font-size: 2rem;
-  color: #ddd;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 200ms;
 }
 
 .star.active {
-  color: #ffd700;
+  color: #ffc107;
 }
 
 .submit-button {
