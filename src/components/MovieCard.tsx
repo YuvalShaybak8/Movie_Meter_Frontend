@@ -45,6 +45,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
   const [movieRating, setMovieRating] = useState(
     movie.averageRating || movie.rating
   );
+  const [hasUserRated, setHasUserRated] = useState(false);
 
   useEffect(() => {
     if (currentUser && currentUser._id) {
@@ -52,6 +53,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
         .then((rating) => {
           setUserRating(rating);
           setTempUserRating(rating);
+          setHasUserRated(rating > 0);
         })
         .catch((error) => console.error("Error fetching user rating:", error));
     }
@@ -100,16 +102,14 @@ const MovieCard: React.FC<MovieCardProps> = ({
       setRatingOpen(false);
       setMovieRating(result.averageRating);
       setUserRating(tempUserRating);
+      setHasUserRated(true);
     } catch (error) {
       console.error("Error rating movie:", error);
       // Handle error (e.g., show error message to user)
     }
   };
 
-  const showRatingIcon =
-    currentUser &&
-    currentUser._id !== movie.owner &&
-    !movie.ratingOfotherUsers.some((r) => r.userId === currentUser._id);
+  const showRatingIcon = currentUser && currentUser._id !== movie.owner;
 
   return (
     <>
@@ -132,12 +132,12 @@ const MovieCard: React.FC<MovieCardProps> = ({
           {showRatingIcon && (
             <div className="movie-rating-top-left">
               <img
-                src={userRating > 0 ? myRating : ratingOut}
+                src={hasUserRated ? myRating : ratingOut}
                 alt="Rating"
                 className="rating-icon"
                 onClick={handleRatingClick}
               />
-              {userRating > 0 && (
+              {hasUserRated && (
                 <span
                   className="my-rating-text"
                   style={{ left: userRating === 10 ? "7px" : "11px" }}
