@@ -105,7 +105,6 @@ export const updateRating = async (id: string, formData: FormData) => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
-    console.log("Update response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error updating rating:", error);
@@ -120,7 +119,6 @@ export const deleteRating = async (id: string) => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
-    console.log("Delete response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error deleting rating:", error);
