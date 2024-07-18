@@ -18,7 +18,6 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted with data:", { username, email, password });
     try {
       await register({ username, email, password });
       navigate("/home");

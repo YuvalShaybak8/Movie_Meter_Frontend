@@ -16,6 +16,7 @@ const EditRatingPage = () => {
   const movieFromState = location.state?.movie;
 
   const [ratingData, setRatingData] = useState({
+    _id: "",
     title: "",
     rating: 0,
     movie_image: "",
@@ -27,6 +28,7 @@ const EditRatingPage = () => {
     const fetchRating = async () => {
       if (movieFromState) {
         setRatingData({
+          _id: movieFromState._id,
           title: movieFromState.title,
           rating: movieFromState.rating,
           movie_image: movieFromState.movie_image,
@@ -35,6 +37,7 @@ const EditRatingPage = () => {
         try {
           const data = await getRatingById(id);
           setRatingData({
+            _id: data._id,
             title: data.title,
             rating: data.rating,
             movie_image: data.movie_image,
@@ -63,7 +66,7 @@ const EditRatingPage = () => {
   };
 
   const handleUpdateRating = async () => {
-    if (id) {
+    if (ratingData._id) {
       try {
         const formData = new FormData();
         formData.append("title", ratingData.title);
@@ -72,21 +75,29 @@ const EditRatingPage = () => {
           formData.append("movie_image", newImage);
         }
 
-        await updateRating(id, formData);
-        console.log("Rating updated successfully");
+        const updatedRating = await updateRating(ratingData._id, formData);
+
+        // Update the local state with the new average rating
+        setRatingData((prevState) => ({
+          ...prevState,
+          averageRating: updatedRating.averageRating,
+        }));
+
         navigate("/my-rating");
       } catch (error) {
         console.error("Error updating rating:", error);
         alert("Failed to update rating. Please try again.");
       }
+    } else {
+      console.error("No rating ID available");
+      alert("Cannot update rating: No ID available");
     }
   };
 
   const handleDelete = async () => {
-    if (id) {
+    if (ratingData._id) {
       try {
-        await deleteRating(id);
-        console.log("Rating deleted successfully");
+        await deleteRating(ratingData._id);
         navigate("/my-rating");
       } catch (error) {
         console.error("Error deleting rating:", error);
@@ -167,7 +178,12 @@ const EditRatingPage = () => {
                 })}
               </div>
             </div>
-            <button onClick={handleUpdateRating} className="submit-button">
+            <button
+              onClick={() => {
+                handleUpdateRating();
+              }}
+              className="submit-button"
+            >
               Update Your Rating
             </button>
             <button
