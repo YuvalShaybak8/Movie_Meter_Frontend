@@ -15,7 +15,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, googleSignIn } = useAuth();
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -25,7 +25,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await login({ email, password });
-      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("loggedinUser", JSON.stringify(response.user));
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);
       axios.defaults.headers.common[
@@ -39,15 +39,7 @@ const LoginPage = () => {
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/google`, {
-        credential: credentialResponse.credential,
-      });
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${response.data.accessToken}`;
+      await googleSignIn(credentialResponse.credential);
       navigate("/home");
     } catch (error) {
       setError("Google sign-in failed. Please try again.");

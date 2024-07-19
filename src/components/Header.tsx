@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/Header.css";
-import { logout } from "../utils/AuthUtils";
+import { useAuth } from "../Context/AuthContext";
 
 const Header = () => {
+  const { logout } = useAuth();
+
   return (
     <header className="header">
       <div className="logo">MovieMeter</div>
