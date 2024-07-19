@@ -1,3 +1,5 @@
+// src/pages/LoginPage.tsx
+
 import React, { useState } from "react";
 import { FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 import "../styles/AuthStyles.css";
@@ -63,23 +65,7 @@ const LoginPage = () => {
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
           onError={handleGoogleError}
-          render={(renderProps: {
-            onClick: () => void;
-            disabled?: boolean;
-          }) => (
-            <button
-              type="button"
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-              style={{ background: "none", border: "none", cursor: "pointer" }}
-            >
-              <img
-                src={googleIcon}
-                alt="Google Sign-In"
-                style={{ width: "30px", height: "30px" }}
-              />
-            </button>
-          )}
+          useOneTap
         />
       </div>
       <span className="SmallText">or use your email account</span>
