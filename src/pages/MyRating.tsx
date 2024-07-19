@@ -4,10 +4,11 @@ import Layout from "../components/Layout";
 import { getUserRatings } from "../services/apiService";
 import MovieCard from "../components/MovieCard";
 import { useAuth } from "../Context/AuthContext";
+import { Movie } from "../types";
 
 const MyRating = () => {
   const { user } = useAuth();
-  const [ratings, setRatings] = useState([]);
+  const [ratings, setRatings] = useState<Movie[]>([]);
   const [userRatings, setUserRatings] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
@@ -50,7 +51,8 @@ const MyRating = () => {
                   }}
                   userRating={userRatings[rating._id] || rating.rating}
                   onRateMovie={handleRateMovie}
-                  isMyRatingsPage={true} // Pass this prop
+                  isMyRatingsPage={true}
+                  currentUser={user}
                 />
               ))}
             </div>

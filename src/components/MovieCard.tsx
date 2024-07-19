@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import "../styles/MovieCard.css";
 import { addUserRating, getUserRatingForMovie } from "../services/apiService";
+import { Movie } from "../types";
 
 import trailerIcon from "../assets/trailer_icon.png";
 import commentIcon from "../assets/comment_icon.png";
@@ -15,19 +16,11 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 interface MovieCardProps {
-  movie: {
-    _id: string;
-    title: string;
-    movie_image: string;
-    rating: number;
-    averageRating: number;
-    commentsCount?: number;
-    owner: string;
-    ratingOfotherUsers: Array<{ userId: string; rating: number }>;
-  };
+  movie: Movie;
   onRateMovie: (movieId: string, rating: number) => void;
   isMyRatingsPage?: boolean;
   currentUser: any;
+  userRating: number;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
@@ -35,23 +28,22 @@ const MovieCard: React.FC<MovieCardProps> = ({
   onRateMovie,
   isMyRatingsPage = false,
   currentUser,
+  userRating,
 }) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [ratingOpen, setRatingOpen] = useState(false);
   const [hover, setHover] = useState(0);
-  const [userRating, setUserRating] = useState(0);
-  const [tempUserRating, setTempUserRating] = useState(0);
+  const [tempUserRating, setTempUserRating] = useState(userRating);
   const [movieRating, setMovieRating] = useState(
     movie.averageRating || movie.rating
   );
-  const [hasUserRated, setHasUserRated] = useState(false);
+  const [hasUserRated, setHasUserRated] = useState(userRating > 0);
 
   useEffect(() => {
     if (currentUser && currentUser._id) {
       getUserRatingForMovie(movie._id, currentUser._id)
         .then((rating) => {
-          setUserRating(rating);
           setTempUserRating(rating);
           setHasUserRated(rating > 0);
         })
@@ -90,9 +82,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
   };
 
   const handleRatingClick = () => {
-    if (userRating === 0) {
-      setRatingOpen(true);
-    }
+    setRatingOpen(true);
   };
 
   const handleRateMovie = async () => {
@@ -101,11 +91,10 @@ const MovieCard: React.FC<MovieCardProps> = ({
       onRateMovie(movie._id, tempUserRating);
       setRatingOpen(false);
       setMovieRating(result.averageRating);
-      setUserRating(tempUserRating);
       setHasUserRated(true);
+      setTempUserRating(tempUserRating);
     } catch (error) {
       console.error("Error rating movie:", error);
-      // Handle error (e.g., show error message to user)
     }
   };
 
@@ -140,9 +129,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
               {hasUserRated && (
                 <span
                   className="my-rating-text"
-                  style={{ left: userRating === 10 ? "7px" : "11px" }}
+                  style={{ left: tempUserRating === 10 ? "7px" : "11px" }}
                 >
-                  {userRating}
+                  {tempUserRating}
                 </span>
               )}
             </div>
@@ -163,7 +152,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
             <div className="movie-actions">
               <Link to={`/comments/${movie._id}`} className="comment-link">
                 <img src={commentIcon} alt="Comment" className="comment-icon" />
-                {movie.commentsCount > 0 && (
+                {(movie.commentsCount ?? 0) > 0 && (
                   <span className="comments-count">{movie.commentsCount}</span>
                 )}
               </Link>
@@ -188,7 +177,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
             <iframe
               width="100%"
               height="400"
-              src={videoUrl}
+              src={videoUrl ?? undefined}
               title="Movie Trailer"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

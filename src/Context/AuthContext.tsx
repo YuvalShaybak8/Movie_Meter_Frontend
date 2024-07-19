@@ -29,6 +29,7 @@ type AuthContextType = {
   logout: () => void;
   user: any;
   setUser: React.Dispatch<React.SetStateAction<any>>;
+  googleSignIn: (credential: string) => Promise<any>;
 };
 
 type Props = {

@@ -4,7 +4,7 @@ import "../styles/AuthStyles.css";
 import googleIcon from "../assets/google_icon.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
@@ -37,13 +37,23 @@ const LoginPage = () => {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse: any) => {
-    try {
-      await googleSignIn(credentialResponse.credential);
-      navigate("/home");
-    } catch (error) {
-      setError("Google sign-in failed. Please try again.");
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
+    if (credentialResponse.credential) {
+      try {
+        await googleSignIn(credentialResponse.credential);
+        navigate("/home");
+      } catch (error) {
+        setError("Google sign-in failed. Please try again.");
+      }
+    } else {
+      setError("Google sign-in failed. No credential received.");
     }
+  };
+
+  const handleGoogleError = () => {
+    setError("Google sign-in failed. Please try again.");
   };
 
   return (
@@ -52,13 +62,15 @@ const LoginPage = () => {
       <div className="SocialIcons">
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
-          onError={() => {
-            setError("Google sign-in failed. Please try again.");
-          }}
-          render={({ onClick }) => (
+          onError={handleGoogleError}
+          render={(renderProps: {
+            onClick: () => void;
+            disabled?: boolean;
+          }) => (
             <button
               type="button"
-              onClick={onClick}
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
               style={{ background: "none", border: "none", cursor: "pointer" }}
             >
               <img

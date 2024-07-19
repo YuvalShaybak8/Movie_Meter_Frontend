@@ -8,9 +8,10 @@ import {
   addUserRating,
 } from "../services/apiService";
 import { useAuth } from "../Context/AuthContext";
+import { Movie } from "../types";
 
 const HomePage = () => {
-  const [ratings, setRatings] = useState([]);
+  const [ratings, setRatings] = useState<Movie[]>([]);
   const [userRatings, setUserRatings] = useState<{ [key: string]: number }>({});
   const { user } = useAuth();
 
@@ -22,10 +23,12 @@ const HomePage = () => {
 
         if (user) {
           const userRatingsData = await getUserRatings();
-          const userRatingsMap = {};
-          userRatingsData.forEach((rating) => {
-            userRatingsMap[rating._id] = rating.rating;
-          });
+          const userRatingsMap: { [key: string]: number } = {};
+          userRatingsData.forEach(
+            (rating: { _id: string | number; rating: number }) => {
+              userRatingsMap[rating._id] = rating.rating;
+            }
+          );
           setUserRatings(userRatingsMap);
         }
       } catch (error) {
@@ -52,7 +55,6 @@ const HomePage = () => {
       );
     } catch (error) {
       console.error("Error rating movie:", error);
-      // Handle error (e.g., show error message to user)
     }
   };
 
@@ -72,7 +74,7 @@ const HomePage = () => {
                   key={movie._id}
                   movie={{
                     ...movie,
-                    commentsCount: movie.comments.length,
+                    commentsCount: movie.commentsCount || 0,
                   }}
                   userRating={userRatings[movie._id] || 0}
                   onRateMovie={handleRateMovie}
