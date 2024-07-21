@@ -43,7 +43,6 @@ const CreateRating = () => {
       navigate("/home");
     } catch (error) {
       console.error("Error submitting rating:", error);
-      // Handle error (e.g., show error message to user)
     }
   };
 

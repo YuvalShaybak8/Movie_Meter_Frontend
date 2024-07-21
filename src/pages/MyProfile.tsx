@@ -86,7 +86,7 @@ const MyProfile = () => {
                         userData.profilePic
                       }`
                     : "/default-avatar.jpg"
-                } // Provide a default avatar
+                }
                 alt="Profile"
                 className="profileImage"
               />

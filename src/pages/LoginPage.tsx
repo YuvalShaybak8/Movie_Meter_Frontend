@@ -3,13 +3,10 @@
 import React, { useState } from "react";
 import { FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 import "../styles/AuthStyles.css";
-import googleIcon from "../assets/google_icon.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");

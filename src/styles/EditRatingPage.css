@@ -4,7 +4,7 @@ html {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
 }
 
 .edit-rating-page {
@@ -12,7 +12,7 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Ensure the page takes full viewport height */
+  height: 100vh;
   width: 100vw;
   padding: 0;
   background-image: url("../assets/page_background/create_rating_background.jpg");
@@ -110,7 +110,7 @@ html {
 }
 
 .star-radio-input {
-  display: none; /* This hides the radio button */
+  display: none;
 }
 
 .star {
@@ -172,7 +172,7 @@ html {
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.3s;
-  margin-top: 1rem; /* Add margin to separate it from the title */
+  margin-top: 1rem;
 }
 
 .upload-button:hover {
