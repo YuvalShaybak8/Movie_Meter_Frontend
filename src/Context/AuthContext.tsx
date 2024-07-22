@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
 
-  axios.defaults.baseURL = `http://localhost:5500`;
+  axios.defaults.baseURL = `http://localhost:4002`;
 
   useEffect(() => {
     const initializeAuth = () => {
