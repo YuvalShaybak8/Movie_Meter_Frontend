@@ -152,7 +152,7 @@ const EditRatingPage = () => {
             <div className="form-group">
               <label>Rating</label>
               <div className="star-rating">
-                {[...Array(10)].map((star, index) => {
+                {[...Array(10)].map((_star, index) => {
                   const ratingValue = index + 1;
                   return (
                     <label key={index}>

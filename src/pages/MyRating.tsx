@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "../styles/MyRating.css";
 import Layout from "../components/Layout";
 import { getUserRatings } from "../services/apiService";

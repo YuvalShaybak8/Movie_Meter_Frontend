@@ -199,7 +199,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
             <h2>Rate This Movie</h2>
             <h3>{movie.title}</h3>
             <div className="star-my-rating">
-              {[...Array(10)].map((star, index) => {
+              {[...Array(10)].map((_star, index) => {
                 const ratingValue = index + 1;
                 return (
                   <label key={index}>

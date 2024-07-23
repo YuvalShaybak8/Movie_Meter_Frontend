@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useAuth } from "../Context/AuthContext";
 
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+const api = axios.create({
+  baseURL: import.meta.env.VITE_REACT_APP_API_URL,
+});
 
 export const RegisterUser = async (userData: {
   username: string;
@@ -10,7 +12,7 @@ export const RegisterUser = async (userData: {
 }) => {
   const { register } = useAuth();
   try {
-    const response = await axios.post(`${API_URL}/auth/register`, userData);
+    const response = await api.post(`/auth/register`, userData);
     register(userData);
     return response.data;
   } catch (error) {
@@ -25,7 +27,7 @@ export const LoginUser = async (userData: {
 }) => {
   const { login } = useAuth();
   try {
-    const response = await axios.post(`${API_URL}/auth/login`, userData);
+    const response = await api.post(`/auth/login`, userData);
     login(userData);
     return response.data;
   } catch (error) {
@@ -36,7 +38,7 @@ export const LoginUser = async (userData: {
 
 export const getUserById = async (userId: string) => {
   try {
-    const response = await axios.get(`${API_URL}/users/${userId}`);
+    const response = await api.get(`/users/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching user details:", error);
@@ -46,7 +48,7 @@ export const getUserById = async (userId: string) => {
 
 export const createRating = async (formData: FormData) => {
   try {
-    const response = await axios.post(`${API_URL}/ratings`, formData, {
+    const response = await api.post(`/ratings`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -61,7 +63,7 @@ export const createRating = async (formData: FormData) => {
 
 export const getAllRatings = async () => {
   try {
-    const response = await axios.get(`${API_URL}/ratings`, {
+    const response = await api.get(`/ratings`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
@@ -75,7 +77,7 @@ export const getAllRatings = async () => {
 
 export const getUserRatings = async () => {
   try {
-    const response = await axios.get(`${API_URL}/ratings/myRatings`, {
+    const response = await api.get(`/ratings/myRatings`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
@@ -89,7 +91,7 @@ export const getUserRatings = async () => {
 
 export const getRatingById = async (id: string) => {
   try {
-    const response = await axios.get(`${API_URL}/ratings/${id}`);
+    const response = await api.get(`/ratings/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching rating by ID:", error);
@@ -99,7 +101,7 @@ export const getRatingById = async (id: string) => {
 
 export const updateRating = async (id: string, formData: FormData) => {
   try {
-    const response = await axios.put(`${API_URL}/ratings/${id}`, formData, {
+    const response = await api.put(`/ratings/${id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -114,7 +116,7 @@ export const updateRating = async (id: string, formData: FormData) => {
 
 export const deleteRating = async (id: string) => {
   try {
-    const response = await axios.delete(`${API_URL}/ratings/${id}`, {
+    const response = await api.delete(`/ratings/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
@@ -128,7 +130,7 @@ export const deleteRating = async (id: string) => {
 
 export const updateUser = async (userId: string, formData: FormData) => {
   try {
-    const response = await axios.put(`${API_URL}/users/${userId}`, formData, {
+    const response = await api.put(`/users/${userId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -143,8 +145,8 @@ export const updateUser = async (userId: string, formData: FormData) => {
 
 export const addComment = async (ratingId: string, comment: string) => {
   try {
-    const response = await axios.post(
-      `${API_URL}/ratings/${ratingId}/comment`,
+    const response = await api.post(
+      `/ratings/${ratingId}/comment`,
       { comment },
       {
         headers: {
@@ -161,8 +163,8 @@ export const addComment = async (ratingId: string, comment: string) => {
 
 export const addUserRating = async (ratingId: string, rating: number) => {
   try {
-    const response = await axios.post(
-      `${API_URL}/ratings/${ratingId}/userRating`,
+    const response = await api.post(
+      `/ratings/${ratingId}/userRating`,
       { rating },
       {
         headers: {
@@ -182,17 +184,16 @@ export const getUserRatingForMovie = async (
   userId: string
 ) => {
   try {
-    const response = await axios.get(
-      `${API_URL}/ratings/${movieId}/userRating/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      }
-    );
+    const response = await api.get(`/ratings/${movieId}/userRating/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
     return response.data.rating;
   } catch (error) {
     console.error("Error fetching user rating for movie:", error);
     throw error;
   }
 };
+
+export default api;
