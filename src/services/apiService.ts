@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useAuth } from "../Context/AuthContext";
 
+const API_BASE_URL =
+  process.env.VITE_REACT_APP_API_URL || "https://node20.cs.colman.ac.il";
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_REACT_APP_API_URL,
+  baseURL: API_BASE_URL,
 });
 
 export const RegisterUser = async (userData: {

@@ -4,6 +4,7 @@ module.exports = {
       name: "client",
       script: "./src/App.tsx",
       env_production: {
+        NODE_ENV: "production",
         VITE_REACT_APP_API_URL: "https://node09.cs.colman.ac.il",
         VITE_API_KEY: "b04e7ba5db91cb63b41243b69801c5f1",
         VITE_GOOGLE_CLIENT_ID:
